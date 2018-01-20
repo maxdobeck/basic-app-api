@@ -2,13 +2,13 @@ package main
 
 import (
 	"net/http"
-	"github.com/maxdobeck/gatekeeper/session_management"
+	"github.com/maxdobeck/gatekeeper/gatekeeper"
 )
 
 func main() {
-	http.HandleFunc("/validate", sessions.ValidSession)
-	http.HandleFunc("/login", sessions.Login)
-	http.HandleFunc("/logout", sessions.Logout)
+	http.HandleFunc("/validate", gatekeeper.ValidSession)
+	http.HandleFunc("/login", gatekeeper.Login)
+	http.HandleFunc("/logout", gatekeeper.Logout)
 
 	http.ListenAndServe(":3030", nil)
 }
