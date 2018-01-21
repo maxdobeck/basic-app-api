@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/maxdobeck/gatekeeper/security"
 	"net/http"
-	"github.com/maxdobeck/gatekeeper/gatekeeper"
 )
 
 func main() {
