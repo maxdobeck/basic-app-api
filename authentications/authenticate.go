@@ -2,25 +2,14 @@ package gatekeeper
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq" // github.com/lib/pq
 	"net/http"
 	"os"
 )
 
-// Credentials are the user provided email and password
-type Credentials struct {
-	Email, Password string
-}
-
-func passwordsMatch(r *http.Request) (match bool) {
-	var c Credentials
-	err := json.NewDecoder(r.Body).Decode(&c)
-	if err != nil {
-		fmt.Println("Error decoding credentials >>", err)
-	}
-	fmt.Println(c.Email, c.Password)
+func passwordsMatch(r *http.Request, c Credentials) (match bool) {
+	// c := DecodeCredentials(r)
 	truePassword, userPresent := getCurPassword(c.Email)
 	if userPresent != true {
 		fmt.Println("User is not in the database")
@@ -33,7 +22,6 @@ func passwordsMatch(r *http.Request) (match bool) {
 		return
 	}
 	match = true
-	fmt.Println("The passwords match", c.Password, truePassword)
 	return
 }
 

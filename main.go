@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/maxdobeck/gatekeeper/security"
+	"github.com/maxdobeck/gatekeeper/authentications"
 	"net/http"
 )
 
