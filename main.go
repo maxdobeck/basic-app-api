@@ -23,5 +23,5 @@ func main() {
 	http.HandleFunc("/login", gatekeeper.Login)
 	http.HandleFunc("/logout", gatekeeper.Logout)
 
-	http.ListenAndServe(":3030", nil)
+	http.ListenAndServe(":8080", nil)
 }
