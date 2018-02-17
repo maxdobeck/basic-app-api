@@ -2,7 +2,7 @@
 Service to authenticate users and validate sessions.
 
 ## Installing and Running
-``` bash
+```
 # Starting local server
 go run main.go
 
