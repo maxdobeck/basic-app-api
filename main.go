@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"fmt"
 )
 
 func main() {
@@ -22,6 +23,7 @@ func main() {
 	http.HandleFunc("/validate", gatekeeper.ValidSession)
 	http.HandleFunc("/login", gatekeeper.Login)
 	http.HandleFunc("/logout", gatekeeper.Logout)
-
-	http.ListenAndServe(":8080", nil)
+	
+	fmt.Println("Listening on http://localhost:3030")
+	http.ListenAndServe(":3030", nil)
 }
