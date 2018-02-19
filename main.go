@@ -1,13 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/antonlindstrom/pgstore"
 	"github.com/maxdobeck/gatekeeper/authentication"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	http.HandleFunc("/validate", gatekeeper.ValidSession)
 	http.HandleFunc("/login", gatekeeper.Login)
 	http.HandleFunc("/logout", gatekeeper.Logout)
-	
+
 	fmt.Println("Listening on http://localhost:3030")
 	http.ListenAndServe(":3030", nil)
 }

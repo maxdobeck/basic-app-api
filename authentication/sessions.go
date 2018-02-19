@@ -12,6 +12,10 @@ type memberDetails struct {
 	ID string
 }
 
+type errorMessage struct {
+	Message string
+}
+
 var (
 	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	key = []byte("super-secret-key")
@@ -60,7 +64,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	creds := DecodeCredentials(r)
 	// Authenticate based on incoming http request
 	if passwordsMatch(r, creds) != true {
-		http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
+		msg := errorMessage{
+			Message: "Incorrect username or password",
+		}
+		w.Header().Set("Content-Type", "application/json")
+		//http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(msg)
 		return
 	}
 	// Get the memberID based on the supplied email
