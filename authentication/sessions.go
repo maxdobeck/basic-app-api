@@ -68,6 +68,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			Message: "Incorrect username or password",
 		}
 		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
 		//http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(msg)
 		return
