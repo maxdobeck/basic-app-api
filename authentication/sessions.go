@@ -9,10 +9,12 @@ import (
 )
 
 type memberDetails struct {
+	Status string
 	ID string
 }
 
 type errorMessage struct {
+	Status string
 	Message string
 }
 
@@ -65,6 +67,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Authenticate based on incoming http request
 	if passwordsMatch(r, creds) != true {
 		msg := errorMessage{
+			Status: "Failed to authenticate",
 			Message: "Incorrect username or password",
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -76,6 +79,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Get the memberID based on the supplied email
 	memberID := getMemberID(creds.Email)
 	m := memberDetails{
+		Status: "OK",
 		ID: memberID,
 	}
 
