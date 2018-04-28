@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/maxdobeck/gatekeeper.svg?branch=dev)](https://travis-ci.org/maxdobeck/gatekeeper)
 # Gatekeeper
 Service to authenticate users and validate sessions.
 
