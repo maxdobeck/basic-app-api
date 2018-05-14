@@ -25,5 +25,6 @@ func main() {
 	http.HandleFunc("/logout", gatekeeper.Logout)
 
 	fmt.Println("Listening on http://localhost:3030")
-	http.ListenAndServe(":3030", nil)
+	log.Fatal(http.ListenAndServe(":3030", nil))
+
 }
