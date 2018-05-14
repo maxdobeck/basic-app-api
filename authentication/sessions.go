@@ -1,3 +1,7 @@
+/*
+* Restructure so that each Handler has its own file under /authentication 
+* 13-05-2018 MSD
+*/
 package gatekeeper
 
 import (
