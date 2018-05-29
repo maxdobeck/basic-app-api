@@ -4,6 +4,9 @@ go:
   - "1.9"
   - "1.10.x"
 
+env:
+  - PGURL="postgres://postgres:""@127.0.0.1:5432/scheduler"
+
 services:
   - postgresql
 
@@ -16,6 +19,7 @@ before_script:
 before_install:
   - psql -c 'create database scheduler;' -U postgres
   - psql -U postgres -d scheduler -f ./database/migrations/travis_setup.sql
+  - psql -U postgres -d scheduler -f ./database/populate_for_tests.sql
 
 script: 
   - go install

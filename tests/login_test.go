@@ -10,8 +10,8 @@ import (
 	"testing"
 )
 
-// Consider adding to golang examples for httptest
-func TestLogin(t *testing.T) {
+// An HTTP test to ensure a login request is rejected if the credentials are wrong
+func TestInvalidLogin(t *testing.T) {
 	bodyReader := strings.NewReader(`{"email": "WrongEmail@email.com", "password": "wrongPassword"}`)
 
 	req, err := http.NewRequest("POST", "/login", bodyReader)
@@ -31,4 +31,22 @@ func TestLogin(t *testing.T) {
 	fmt.Println(resp.StatusCode)
 	fmt.Println(resp.Header.Get("Content-Type"))
 	fmt.Println(string(body))
+}
+
+// Test the Login command with a valid set of credentials
+func TestValidLogin(t *testing.T) {
+	bodyReader := strings.NewReader(`{"email": "test@gmail.com", "password": "supersecret"}`)
+
+	req, err := http.NewRequest("POST", "/login", bodyReader)
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := httptest.NewRecorder()
+	gatekeeper.Login(w, req)
+
+	resp := w.Result()
+
+	if resp.StatusCode != 200 {
+		t.Fail()
+	}
 }
