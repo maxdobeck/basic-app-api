@@ -4,6 +4,19 @@ go:
   - "1.9"
   - "1.10.x"
 
+services:
+  - postgresql
+
+addons:
+  postgresql: '9.5'
+
+before_script:
+  - cp .env.travis .env
+
+before_install:
+  - psql -c 'create database scheduler;' -U postgres
+  - psql -U postgres -d scheduler -f ./src/db/migrations/travis_setup.sql
+
 script: 
   - go install
   - go test ./tests/*
