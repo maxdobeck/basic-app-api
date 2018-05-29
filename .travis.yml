@@ -4,4 +4,6 @@ go:
   - "1.9"
   - "1.10.x"
 
-script: go install
+script: 
+  - go install
+  - go test ./tests/*
