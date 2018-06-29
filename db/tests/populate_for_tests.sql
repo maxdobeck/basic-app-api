@@ -1,0 +1,1 @@
+INSERT INTO members(name, email, password) VALUES('Test User', 'test@gmail.com', 'supersecret') RETURNING *;

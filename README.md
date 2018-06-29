@@ -1,11 +1,14 @@
 [![Build Status](https://travis-ci.org/maxdobeck/gatekeeper.svg?branch=master)](https://travis-ci.org/maxdobeck/gatekeeper)
 # Gatekeeper
-Service to authenticate users and validate sessions.
+Service to authenticate users, create sessions, and validate sessions.
 
 ## Installing and Running
 ```
 # Starting local server
 $ go run main.go
+
+# Run all tests
+$ go test ./tests/*
 
 # Compile and create executable
 This will place the executable under go/bin

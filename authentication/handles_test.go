@@ -1,8 +1,7 @@
-package main
+package authentication
 
 import (
 	"fmt"
-	"github.com/maxdobeck/gatekeeper/authentication"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +10,7 @@ import (
 )
 
 // An HTTP test to ensure a login request is rejected if the credentials are wrong
-func TestInvalidLogin(t *testing.T) {
+func TestLoginInvalidCredentials(t *testing.T) {
 	bodyReader := strings.NewReader(`{"email": "WrongEmail@email.com", "password": "wrongPassword"}`)
 
 	req, err := http.NewRequest("POST", "/login", bodyReader)
@@ -19,7 +18,7 @@ func TestInvalidLogin(t *testing.T) {
 		t.Fatal(err)
 	}
 	w := httptest.NewRecorder()
-	gatekeeper.Login(w, req)
+	Login(w, req)
 
 	resp := w.Result()
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -34,7 +33,7 @@ func TestInvalidLogin(t *testing.T) {
 }
 
 // Test the Login command with a valid set of credentials
-func TestValidLogin(t *testing.T) {
+func TestLoginValidCredentials(t *testing.T) {
 	bodyReader := strings.NewReader(`{"email": "test@gmail.com", "password": "supersecret"}`)
 
 	req, err := http.NewRequest("POST", "/login", bodyReader)
@@ -42,7 +41,7 @@ func TestValidLogin(t *testing.T) {
 		t.Fatal(err)
 	}
 	w := httptest.NewRecorder()
-	gatekeeper.Login(w, req)
+	Login(w, req)
 
 	resp := w.Result()
 
