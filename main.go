@@ -30,6 +30,15 @@ func main() {
 	connStr := os.Getenv("PGURL")
 	models.ConnToDB(connStr)
 
+	var allowedDomains []string
+	if os.Getenv("GO_ENV") == "dev" {
+		allowedDomains = []string{"http://127.0.0.1:3030", "http://localhost:3030"}
+	} else if os.Getenv("GO_ENV") == "test" {
+		allowedDomains = []string{"http://s3-sih-test.s3-website-us-west-1.amazonaws.com"}
+	} else if os.Getenv("GO_ENV") == "prod" {
+		allowedDomains = []string{"https://schedulingishard.com", "https://www.schedulingishard.com"}
+	}
+
 	CSRF := csrf.Protect(
 		[]byte("32-byte-long-auth-key"),
 		csrf.RequestHeader("X-CSRF-Token"),
@@ -38,7 +47,7 @@ func main() {
 	)
 
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://127.0.0.1:3030", "http://localhost:3030", "https://schedulingishard.com", "https://www.schedulingishard.com"},
+		AllowedOrigins:   allowedDomains,
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"X-CSRF-Token"},
 		ExposedHeaders:   []string{"X-CSRF-Token"},
@@ -58,6 +67,13 @@ func main() {
 	n.Use(c)
 	n.UseHandler(CSRF(r))
 
-	log.Println("Listening on http://localhost:3000")
-	log.Fatal(http.ListenAndServe(":3000", context.ClearHandler(n)))
+	var hostURL string
+	if os.Getenv("GO_ENV") == "test" {
+		hostURL = "https://shielded-stream-75107.herokuapp.com/"
+	} else if os.Getenv("GO_ENV") == "dev" {
+		hostURL = "http://localhost"
+	}
+	port := os.Getenv("PORT")
+	log.Println("Listening on: ", hostURL)
+	log.Fatal(http.ListenAndServe(":"+port, context.ClearHandler(n)))
 }

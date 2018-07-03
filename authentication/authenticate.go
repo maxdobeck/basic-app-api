@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq" // github.com/lib/pq
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
 )
@@ -33,21 +34,20 @@ func getCurPassword(email string) (password string, userPresent bool) {
 	return
 }
 
-func passwordsMatch(r *http.Request, c Credentials) (match bool) {
+func passwordsMatch(r *http.Request, c Credentials) bool {
 	// c := DecodeCredentials(r)
-	truePassword, userPresent := getCurPassword(c.Email)
+	curPw, userPresent := getCurPassword(c.Email)
 	if userPresent != true {
 		fmt.Println("User is not in the database")
-		match = false
-		return
+		return false
 	}
-	if truePassword != c.Password {
-		match = false
+	loginPw := []byte(c.Password)
+	hashedPw := []byte(curPw)
+	if bcrypt.CompareHashAndPassword(hashedPw, loginPw) != nil {
 		fmt.Println("The passwords do not match")
-		return
+		return false
 	}
-	match = true
-	return
+	return true
 }
 
 // DecodeCredentials decodes the JSON data into a struct containing the email and password.DecodeCredentials

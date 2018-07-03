@@ -2,9 +2,12 @@ package authentication
 
 import (
 	"fmt"
+	"github.com/maxdobeck/gatekeeper/members"
+	"github.com/maxdobeck/gatekeeper/models"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
@@ -34,8 +37,17 @@ func TestLoginInvalidCredentials(t *testing.T) {
 
 // Test the Login command with a valid set of credentials
 func TestLoginValidCredentials(t *testing.T) {
-	bodyReader := strings.NewReader(`{"email": "test@gmail.com", "password": "supersecret"}`)
+	models.ConnToDB(os.Getenv("PGURL"))
+	// Signup a user
+	signupBody := strings.NewReader(`{"email": "testValidCreds@gmail.com", "email2":"testValidCreds@gmail.com", "password": "supersecret", "password2":"supersecret", "name":"Valid User Signup"}`)
+	signupReq, signupErr := http.NewRequest("POST", "/members", signupBody)
+	if signupErr != nil {
+		t.Fail()
+	}
+	wSignup := httptest.NewRecorder()
+	members.SignupMember(wSignup, signupReq)
 
+	bodyReader := strings.NewReader(`{"email": "testValidCreds@gmail.com", "password": "supersecret"}`)
 	req, err := http.NewRequest("POST", "/login", bodyReader)
 	if err != nil {
 		t.Fatal(err)
