@@ -1,28 +1,18 @@
-package gatekeeper
+package authentication
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq" // github.com/lib/pq
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
 )
 
-func passwordsMatch(r *http.Request, c Credentials) (match bool) {
-	// c := DecodeCredentials(r)
-	truePassword, userPresent := getCurPassword(c.Email)
-	if userPresent != true {
-		fmt.Println("User is not in the database")
-		match = false
-		return
-	}
-	if truePassword != c.Password {
-		match = false
-		fmt.Println("The passwords do not match")
-		return
-	}
-	match = true
-	return
+// Credentials are the user provided email and password
+type Credentials struct {
+	Email, Password string
 }
 
 func getCurPassword(email string) (password string, userPresent bool) {
@@ -41,5 +31,30 @@ func getCurPassword(email string) (password string, userPresent bool) {
 		fmt.Println(sqlErr)
 	}
 	userPresent = true
+	return
+}
+
+func passwordsMatch(r *http.Request, c Credentials) bool {
+	// c := DecodeCredentials(r)
+	curPw, userPresent := getCurPassword(c.Email)
+	if userPresent != true {
+		fmt.Println("User is not in the database")
+		return false
+	}
+	loginPw := []byte(c.Password)
+	hashedPw := []byte(curPw)
+	if bcrypt.CompareHashAndPassword(hashedPw, loginPw) != nil {
+		fmt.Println("The passwords do not match")
+		return false
+	}
+	return true
+}
+
+// DecodeCredentials decodes the JSON data into a struct containing the email and password.DecodeCredentials
+func DecodeCredentials(r *http.Request) (c Credentials) {
+	err := json.NewDecoder(r.Body).Decode(&c)
+	if err != nil {
+		fmt.Println("Error decoding credentials >>", err)
+	}
 	return
 }

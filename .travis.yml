@@ -1,7 +1,51 @@
 language: go
-
 go:
-  - "1.9"
-  - "1.10.x"
-
-script: go install
+- '1.9'
+- 1.10.x
+env:
+- PGURL="postgres://postgres:""@127.0.0.1:5432/scheduler"
+services:
+- postgresql
+addons:
+  postgresql: '9.5'
+before_script:
+- cp .env.travis .env
+before_install:
+- psql -c 'create database scheduler;' -U postgres
+- psql -U postgres -d scheduler -f ./db/migrations/setup.sql
+script:
+- go install
+- go test ./...
+jobs:
+  include:
+  - stage: deploy to heroku for dev test
+    if: branch = dev
+    deploy:
+      go: '1.9'
+      install: skip
+      services: skip
+      addons: skip
+      before_script: skip
+      script: skip
+      provider: heroku
+      on: dev
+      app:
+        dev: shielded-stream-75107
+      api_key:
+        secure: EYArF9Rdv6KI1BsWXGui9+Hc9i96Be/4IggoA2roj26w+UqcGrs60cNbE39hx9oJ0D39Bu1nElT6eqYjtHsSgI3DmnOpwKuFhQQrf1hFJEAuTdz/ViG1Fak06TrstEw/E6zkFy09odKT/+V3Y6ks35Xeui9tHXHa8Rr0YmOkXud/m6K8N0sOl5Vzv4h+5ufL+JYmDILt1Cmsl0Tgz6khs23XJxdNH7/XCEUBxH+21ok9nnVyRFdJxh71WPJ8ns5vcrRWSWN6lpp9b3m/bWUEjLAfvI7l2MB7RrLEyWX3v5mh/By/tbo5d97tQ+g7anJrzJNcKjIHI/PQnof21OHyY0wlb12hoZWgYdQIbbUp10So6EKRdInj5XSKvc7mwD6cUno+glK2kGlJjLnhr68jQj6TO4bYmWeyAq0DRzbNkTC8BVVoDbMQkBgAgoJX0paN0lQJzW0jCjeLklj4tVd+6tsDuuCKzbpoWzahbl1ChCBHg++aWFyQyIt1z8/OqTPcr0LgmxZW5oSxM42BwLr/b3mn14R1nv5V+JfscR7ZcrXgAFrlA1uYElbQUBDNIVC+VOger6jYq5AZNMinRmoJW8R36DUSR3WqG90/93tYjFu3+5glOdW8+fW8D4Ll+AF7xOsauG8ZEq5/skU6V+F5x8L/M0HukFJPBfKjRW2OZ+U=
+  - stage: deploy to prod
+    if: branch = prod
+    deploy:
+      go: '1.9'
+      install: skip
+      services: skip
+      addons: skip
+      before_script: skip
+      script: skip
+      provider: heroku
+      on: prod
+      app:
+        prod: rugged-wind-cave-81042
+      api_key:
+        secure: EYArF9Rdv6KI1BsWXGui9+Hc9i96Be/4IggoA2roj26w+UqcGrs60cNbE39hx9oJ0D39Bu1nElT6eqYjtHsSgI3DmnOpwKuFhQQrf1hFJEAuTdz/ViG1Fak06TrstEw/E6zkFy09odKT/+V3Y6ks35Xeui9tHXHa8Rr0YmOkXud/m6K8N0sOl5Vzv4h+5ufL+JYmDILt1Cmsl0Tgz6khs23XJxdNH7/XCEUBxH+21ok9nnVyRFdJxh71WPJ8ns5vcrRWSWN6lpp9b3m/bWUEjLAfvI7l2MB7RrLEyWX3v5mh/By/tbo5d97tQ+g7anJrzJNcKjIHI/PQnof21OHyY0wlb12hoZWgYdQIbbUp10So6EKRdInj5XSKvc7mwD6cUno+glK2kGlJjLnhr68jQj6TO4bYmWeyAq0DRzbNkTC8BVVoDbMQkBgAgoJX0paN0lQJzW0jCjeLklj4tVd+6tsDuuCKzbpoWzahbl1ChCBHg++aWFyQyIt1z8/OqTPcr0LgmxZW5oSxM42BwLr/b3mn14R1nv5V+JfscR7ZcrXgAFrlA1uYElbQUBDNIVC+VOger6jYq5AZNMinRmoJW8R36DUSR3WqG90/93tYjFu3+5glOdW8+fW8D4Ll+AF7xOsauG8ZEq5/skU6V+F5x8L/M0HukFJPBfKjRW2OZ+U=
+  
