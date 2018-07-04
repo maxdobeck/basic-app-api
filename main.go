@@ -32,7 +32,7 @@ func main() {
 
 	var allowedDomains []string
 	if os.Getenv("GO_ENV") == "dev" {
-		allowedDomains = []string{"http://127.0.0.1:3030", "http://localhost:3030"}
+		allowedDomains = []string{"http://127.0.0.1:3000", "http://localhost:3000"}
 	} else if os.Getenv("GO_ENV") == "test" {
 		allowedDomains = []string{"http://s3-sih-test.s3-website-us-west-1.amazonaws.com"}
 	} else if os.Getenv("GO_ENV") == "prod" {
@@ -74,6 +74,6 @@ func main() {
 		hostURL = "http://localhost"
 	}
 	port := os.Getenv("PORT")
-	log.Println("Listening on: ", hostURL)
+	log.Println("Listening on: ", hostURL+":"+port)
 	log.Fatal(http.ListenAndServe(":"+port, context.ClearHandler(n)))
 }

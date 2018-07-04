@@ -21,7 +21,7 @@ func check(err error) {
 	}
 }
 
-// GoodSession returns true or false depending on if the session is current
+// GoodSession returns true or false depending on if the session is active
 func GoodSession(r *http.Request) bool {
 	store, err := pgstore.NewPGStore(os.Getenv("PGURL"), key)
 	check(err)
