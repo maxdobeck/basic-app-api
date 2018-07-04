@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/maxdobeck/gatekeeper.svg?branch=prod)](https://travis-ci.org/maxdobeck/gatekeeper)
+[![Build Status](https://travis-ci.org/maxdobeck/gatekeeper.svg?branch=master)](https://travis-ci.org/maxdobeck/gatekeeper)
 
 # Gatekeeper
 Service to authenticate users, manage user sessions, and process business logic.
