@@ -42,9 +42,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	defer store.Close()
 	session, err := store.Get(r, "scheduler-session")
 	check(err)
+
+	var domain string
+	if os.Getenv("GO_ENV") == "dev" {
+		domain = "127.0.0.1:3000"
+	} else if os.Getenv("GO_ENV") == "test" {
+		domain = "http://s3-sih-test.s3-website-us-west-1.amazonaws.com"
+	} else if os.Getenv("GO_ENV") == "prod" {
+		domain = "https://schedulingishard.com"
+	}
 	// Limit the sessions to 1 24-hour day
 	session.Options.MaxAge = 86400 * 1
-	session.Options.Domain = "localhost" // Set to localhost for testing only.  prod must be set to "schedulingishard.com"
+	session.Options.Domain = domain // Set to localhost for testing only.  prod must be set to "schedulingishard.com"
 	session.Options.HttpOnly = true
 
 	creds := DecodeCredentials(r)

@@ -70,7 +70,9 @@ func main() {
 	n.UseHandler(CSRF(r))
 
 	var hostURL string
-	if os.Getenv("GO_ENV") == "test" {
+	if os.Getenv("GO_ENV") == "prod" {
+		hostURL = "https://rugged-wind-cave-81042.herokuapp.com"
+	} else if os.Getenv("GO_ENV") == "test" {
 		hostURL = "https://shielded-stream-75107.herokuapp.com/"
 	} else if os.Getenv("GO_ENV") == "dev" {
 		hostURL = "http://localhost"

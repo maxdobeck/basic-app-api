@@ -20,13 +20,12 @@ jobs:
   include:
   - stage: deploy to heroku for dev test
     if: branch = dev
+    script: go install
     deploy:
       go: '1.9'
-      install: skip
       services: skip
       addons: skip
       before_script: skip
-      script: skip
       provider: heroku
       on: dev
       app:
