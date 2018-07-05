@@ -60,6 +60,8 @@ func main() {
 	r.HandleFunc("/csrftoken", sessions.CsrfToken).Methods("GET")
 	r.HandleFunc("/login", authentication.Login).Methods("POST")
 	r.HandleFunc("/logout", authentication.Logout).Methods("POST")
+	// Session Routes
+	r.HandleFunc("/validsession", sessions.ValidSession).Methods("GET")
 	// Member CRUD routes
 	r.HandleFunc("/members", members.SignupMember).Methods("POST")
 	// Middleware
