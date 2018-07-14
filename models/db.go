@@ -7,16 +7,17 @@ import (
 	"log"
 )
 
-var db *sql.DB
+// Db is global variable pointer to database connection
+var Db *sql.DB
 
 // ConnToDB connects the database.  This should be called at the app start
 func ConnToDB(dbURL string) {
 	var err error
-	db, err = sql.Open("postgres", dbURL)
+	Db, err = sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Println(err)
 	}
-	if err = db.Ping(); err != nil {
+	if err = Db.Ping(); err != nil {
 		log.Println(err)
 	}
 }

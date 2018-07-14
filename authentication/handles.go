@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/antonlindstrom/pgstore"
 	"github.com/gorilla/csrf"
-	"github.com/maxdobeck/gatekeeper/members"
+	"github.com/maxdobeck/gatekeeper/models"
 	"github.com/maxdobeck/gatekeeper/sessions"
 	"log"
 	"net/http"
@@ -15,6 +15,8 @@ import (
 // Remove Member Details and errorMessage to other packages
 type memberDetails struct {
 	Status string
+	Name   string
+	Email  string
 	ID     string
 }
 
@@ -71,10 +73,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Get the memberID based on the supplied email
-	memberID := members.GetMemberID(creds.Email)
+	memberID := models.GetMemberID(creds.Email)
+	memberName := models.GetMemberName(memberID)
 	m := memberDetails{
 		Status: "OK",
 		ID:     memberID,
+		Name:   memberName,
+		Email:  creds.Email,
 	}
 
 	// Respond with the proper content type and the memberID

@@ -7,24 +7,6 @@ import (
 	"os"
 )
 
-// GetMemberID uses the primary email of a user to get the memberID from the member's table
-func GetMemberID(email string) (memberID string) {
-	connStr := os.Getenv("PGURL")
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		fmt.Println(err)
-	}
-	sqlErr := db.QueryRow("SELECT id FROM members WHERE email = $1", email).Scan(&memberID)
-	if sqlErr == sql.ErrNoRows {
-		memberID = ""
-		return
-	}
-	if sqlErr != nil {
-		fmt.Println(sqlErr)
-	}
-	return
-}
-
 func uniqueEmail(email string) bool {
 	connStr := os.Getenv("PGURL")
 	db, err := sql.Open("postgres", connStr)

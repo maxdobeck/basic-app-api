@@ -10,7 +10,7 @@ import (
 func TestCreateMember(t *testing.T) {
 	ConnToDB(os.Getenv("PGURL"))
 
-	_, delErr := db.Query("DELETE FROM members WHERE email like 'testtest@gmail.com'")
+	_, delErr := Db.Query("DELETE FROM members WHERE email like 'testtest@gmail.com'")
 	log.Println(delErr)
 
 	m := NewMember{
@@ -26,7 +26,7 @@ func TestCreateMember(t *testing.T) {
 	}
 
 	var record string
-	err := db.QueryRow("SELECT email FROM members WHERE email like 'testtest@gmail.com'").Scan(&record)
+	err := Db.QueryRow("SELECT email FROM members WHERE email like 'testtest@gmail.com'").Scan(&record)
 	if err != nil {
 		log.Println(err)
 		t.Log(err)
