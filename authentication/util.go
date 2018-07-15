@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	_ "github.com/lib/pq" // github.com/lib/pq
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"

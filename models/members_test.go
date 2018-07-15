@@ -1,7 +1,6 @@
 package models
 
 import (
-	_ "github.com/lib/pq" // github.com/lib/pq
 	"log"
 	"os"
 	"testing"

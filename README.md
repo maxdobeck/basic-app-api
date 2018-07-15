@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/maxdobeck/basic-app-api.svg?branch=master)](https://travis-ci.org/maxdobeck/basic-app-api)
 
 
-# Gatekeeper
+# basic-app-api
 Service to authenticate users, manage user sessions, and process business logic.
 
 ## Installing and Running
@@ -17,7 +17,7 @@ This will place the executable under go/bin
 $ go install
 
 # Run the executable
-$ gatekeeper
+$ basic-app-api
 ```
 
 ## Background

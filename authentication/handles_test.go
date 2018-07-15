@@ -2,18 +2,26 @@ package authentication
 
 import (
 	"fmt"
-	"github.com/maxdobeck/gatekeeper/members"
-	"github.com/maxdobeck/gatekeeper/models"
+	"github.com/maxdobeck/basic-app-api/members"
 	"io/ioutil"
+	_ "github.com/lib/pq" // github.com/lib/pq
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 )
 
 // An HTTP test to ensure a login request is rejected if the credentials are wrong
 func TestLoginGoodCredentials(t *testing.T) {
+	// Signup a user
+	signupBody := strings.NewReader(`{"email": "goodUser@gmail.com", "email2":"goodUser@gmail.com", "password": "supersecret", "password2":"supersecret", "name":"Valid User Signup"}`)
+	signupReq, signupErr := http.NewRequest("POST", "/members", signupBody)
+	if signupErr != nil {
+		t.Fail()
+	}
+	wSignup := httptest.NewRecorder()
+	members.SignupMember(wSignup, signupReq)
+
 	bodyReader := strings.NewReader(`{"email": "WrongEmail@email.com", "password": "wrongPassword"}`)
 
 	req, err := http.NewRequest("POST", "/login", bodyReader)
@@ -37,7 +45,6 @@ func TestLoginGoodCredentials(t *testing.T) {
 
 // Test the Login command with a valid set of credentials
 func TestLoginBadCredentials(t *testing.T) {
-	models.ConnToDB(os.Getenv("PGURL"))
 	// Signup a user
 	signupBody := strings.NewReader(`{"email": "testValidCreds@gmail.com", "email2":"testValidCreds@gmail.com", "password": "supersecret", "password2":"supersecret", "name":"Valid User Signup"}`)
 	signupReq, signupErr := http.NewRequest("POST", "/members", signupBody)

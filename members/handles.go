@@ -3,9 +3,10 @@ package members
 
 import (
 	"encoding/json"
+	_ "github.com/lib/pq" // github.com/lib/pq
 	"github.com/gorilla/mux"
-	"github.com/maxdobeck/gatekeeper/models"
-	"github.com/maxdobeck/gatekeeper/sessions"
+	"github.com/maxdobeck/basic-app-api/models"
+	"github.com/maxdobeck/basic-app-api/sessions"
 	"log"
 	"net/http"
 )

@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	_ "github.com/lib/pq" // github.com/lib/pq
-	"github.com/maxdobeck/gatekeeper/authentication"
-	"github.com/maxdobeck/gatekeeper/models"
+	"github.com/maxdobeck/basic-app-api/authentication"
+	"github.com/maxdobeck/basic-app-api/models"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -168,3 +167,4 @@ func TestChangeMemberName(t *testing.T) {
 		t.Fail()
 	}
 }
+
