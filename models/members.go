@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq" // github.com/lib/pq
 	"golang.org/x/crypto/bcrypt"
 	"log"
 )

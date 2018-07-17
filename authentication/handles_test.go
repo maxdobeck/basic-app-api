@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/maxdobeck/basic-app-api/members"
 	"io/ioutil"
-	_ "github.com/lib/pq" // github.com/lib/pq
 	"net/http"
 	"net/http/httptest"
 	"strings"

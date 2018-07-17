@@ -3,8 +3,8 @@ package members
 
 import (
 	"encoding/json"
-	_ "github.com/lib/pq" // github.com/lib/pq
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq" // github.com/lib/pq
 	"github.com/maxdobeck/basic-app-api/models"
 	"github.com/maxdobeck/basic-app-api/sessions"
 	"log"
@@ -66,7 +66,10 @@ func SignupMember(w http.ResponseWriter, r *http.Request) {
 			Status: "Member Created",
 			Errors: signupErrs,
 		}
-		models.CreateMember(&m)
+		err := models.CreateMember(&m)
+		if err != nil {
+			log.Println(err)
+		}
 		json.NewEncoder(w).Encode(msg)
 		log.Println("User Created", m.Email, m.Name)
 	} else {
